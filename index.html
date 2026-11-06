@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Мой челлендж</title>
+<style>
+body{font-family:Arial;background:#fff0f6;color:#654357;text-align:center;padding:20px}
+main{background:white;border-radius:24px;padding:22px;max-width:400px;margin:auto}
+button{padding:12px;border:0;border-radius:12px;background:#f4c4d9;color:#70415b;margin:5px}
+input{width:90px;padding:10px;border:1px solid #e8c4d5;border-radius:9px}
+.days{display:grid;grid-template-columns:repeat(5,1fr);margin-top:20px}
+</style>
+</head>
+<body>
+<main>
+<h2>🌷 Мой челлендж</h2>
+<p>30 дней заботы о себе 💗</p>
+<button onclick="move(-1)">← Назад</button>
+<b id="title">День 1</b>
+<button onclick="move(1)">Вперёд →</button>
+<h3>🧘‍♀️ Планка</h3><input id="plank" placeholder="Время">
+<h3>💪 Отжимания</h3><input id="push" placeholder="Количество">
+<br><button onclick="save()">Сохранить результат</button>
+<div class="days" id="days"></div>
+<p>Отдых тоже часть прогресса 🌸</p>
+</main>
+<script>
+let day=1, data={1:{plank:"1 мин 24 сек",push:"9 раз"},2:{plank:"1 мин 50 сек",push:"11 раз"}};
+try{data={...data,...JSON.parse(localStorage.getItem("challenge")||"{}")}}catch(e){}
+function render(){
+title.textContent="День "+day;
+plank.value=data[day]?.plank||"";
+push.value=data[day]?.push||"";
+days.innerHTML="";
+for(let i=1;i<=30;i++){
+let b=document.createElement("button");b.textContent=i;
+b.onclick=()=>{day=i;render()};days.appendChild(b)}
+}
+function move(n){day=Math.max(1,Math.min(30,day+n));render()}
+function save(){
+data[day]={plank:plank.value,push:push.value};
+localStorage.setItem("challenge",JSON.stringify(data));
+render();alert("Результат сохранён 💗")
+}
+render();
+</script>
+</body>
+</html>
